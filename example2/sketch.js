@@ -1,14 +1,8 @@
 var mic;
 var button;
-var smoothMicLevel=0;
+var smoothMicLevel=5;
 var t;
-var song;
-var button;
-var amplitude;
 
-function preload() {
-  song = loadSound("../audio/myBeat.mp3");
-}
 
 function setup() {
 	createCanvas(windowWidth, windowHeight-100);
@@ -17,23 +11,28 @@ function setup() {
     button.mousePressed(toggleListen);
 	mic = new p5.AudioIn()
     mic.start();
-    t = 0;
+    t = 100;
 }
 
 function draw() {
   background(0, 5);
   micLevel = mic.getLevel();
   var x = width * noise(t);
-  var y = height * noise(t+5);
+  var y = height * noise(t+100);
   var r = 255 * noise(t+10);
   var g = 255 * noise(t+15);
   var b = 255 * noise(t+20);
-  smoothMicLevel = lerp(smoothMicLevel, micLevel,0.2);
+  smoothMicLevel = lerp(smoothMicLevel, micLevel, 5);
+  translate(width/2, height/2)
   noStroke();
   fill(r, g, b);
-  ellipse(x, y, 120, 120);
-
-  t = t + 0.005;
+  
+  for(var i = 0; i < 15; i++){
+    rotate(PI/4); 
+    ellipse(micLevel * x * i, micLevel * y * i, i, i);
+    }
+    
+    t = t + 0.05;
 }
 
 function toggleListen() {
